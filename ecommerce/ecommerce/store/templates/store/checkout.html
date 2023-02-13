@@ -1,0 +1,365 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+     <div class="row">
+		<div class="col-lg-6">
+			
+			<!-- DELIVERY METHOD -->
+			<div class="box-element">
+				<h3>Shipping Information:</h3>
+				<hr>
+				
+				<!-- <h6>Choose from Delivery or Click & Collect to estimate any charges:</h6> -->
+					
+
+			<form>
+				<!-- DROPDOWN MENU DELIVERY METHOD -->
+				<div class="form-group">
+					<label for="delivery_method">Delivery Method:</label>
+					<select class="form-control" id="delivery_method">
+						<option></option>
+						<option>Delivery</option>
+						<option>Click & Collect</option>
+					</select>
+				</div>
+
+				<!-- DROPDOWN MENU DELIVERY TO -->
+				<div class="form-group" id="delivery_to_group">
+					<label for="delivery_city">Delivery To:</label>
+					<select class="form-control" id="delivery_city">
+						<option value="1"></option>
+						<option value="2">Delivery - Auckland</option>
+						<option value="3">Delivery - Hamilton</option>
+						<option value="3">Delivery - Christchurch</option>
+						<option value="3">Delivery - Wellington</option>
+						<option value="3">Delivery - Queenstown</option>
+					</select>
+				</div>
+				
+
+				<!-- DROPDOWN MENU SELECT BRANCH -->
+				<div class="form-group" id="select_branch_group" style="display: none;">
+					<label for="select_branch">Select Branch:</label>
+					<select class="form-control" id="select_branch">
+						<option value="3"></option>
+						<option value="1">Ahera Taera - Auckland - Westfield Newmarket  </option>
+						<option value="2">Ahera Taera - Hamilton - Chartwell Shopping Centre</option>
+						<option value="3">Ahera Taera - Christchuch - Riccarton Mall</option>
+						<option value="4">Ahera Taera - Wellington - Queensgate Shopping Centre</option>
+						<option value="5">Ahera Taera - Queenstown- Queenstown Mall</option>
+					</select>
+				</div>
+			</form>
+
+			
+
+			<!-- SCRIPT TO HIDE THE DELIVERY TO DROPDOWN MENU WHEN USER SELECT CLICK AND COLLECT METHOD -->
+			<script>
+			document.getElementById("delivery_method").addEventListener("change", function() {
+				if (this.value === "Click & Collect") {
+					document.getElementById("delivery_to_group").style.display = "none";
+					document.getElementById("select_branch_group").style.display = "block";
+				} else {
+					document.getElementById("delivery_to_group").style.display = "block";
+					document.getElementById("select_branch_group").style.display = "none";
+				}
+			});
+			</script>
+
+			</div> 
+			<br>
+			<!-- DELIVERY METHOD END -->
+
+
+
+			<!-- SHIPPING INFORMATION -->
+			<div class="box-element" id="form-wrapper">
+				<form id="form">
+					{% csrf_token %}
+					<div id="user-info">
+						<div class="form-field">
+							<input required class="form-control" type="text" name="name" placeholder="Name..">
+						</div>
+						<div class="form-field">
+							<input required class="form-control" type="email" name="email" placeholder="Email..">
+						</div>
+					</div>
+					
+			
+					<div id="shipping-info">
+						<!-- <hr>
+						<h3>Shipping Information:</h3> -->
+						<hr>
+						<div class="form-field">
+							<input class="form-control" type="text" name="address" placeholder="Address..">
+						</div>
+						<div class="form-field">
+							<input class="form-control" type="text" name="city" placeholder="City..">
+						</div>
+						<div class="form-field">
+							<input class="form-control" type="text" name="state" placeholder="State..">
+						</div>
+						<div class="form-field">
+							<input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
+						</div>
+						<div class="form-field">
+							<input class="form-control" type="text" name="country" placeholder="Zip code..">
+						</div>
+					</div>
+			
+					<hr>	
+						
+			
+			<hr>
+					<input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
+				</form>
+			</div>
+			
+			<br>
+			<div class="box-element hidden" id="payment-info">
+				<small>Paypal Options</small>
+				 <!-- Set up a container element for the button -->
+				 <div id="paypal-button-container"></div>
+			
+				<!-- <button id="make-payment">Make payment</button> -->
+			</div>
+
+			<!-- SHIPPING INFORMATION END -->
+			
+
+
+			
+
+
+
+
+			
+		</div>
+
+		<!-- <div class="col-lg-6">
+			<div class="box-element">
+				<a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
+				<hr>
+				<h3>Order Summary</h3>
+				<hr>
+				{% for item in items %}
+				<div class="cart-row">
+					<div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
+					<div style="flex:2"><p>{{item.product.name}}</p></div>
+					<div style="flex:1"><p>${{item.product.price|floatformat:2}}</p></div>
+					<div style="flex:1"><p>x{{item.quantity}}</p></div>
+				</div>
+				{% endfor %}
+				<h5>Items:   {{order.get_cart_items}}</h5>
+				<h5>Total:   ${{order.get_cart_total|floatformat:2}}</h5>
+			</div>
+		</div>
+	</div> -->
+	
+	<!-- ORDER SUMMARY -->
+	<div class="col-lg-6">
+		<div class="box-element">
+			<a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
+
+			<hr>
+			<h3>Order Summary</h3>
+			<!-- <hr> -->
+			{% for item in items %}
+			<div class="cart-row">
+				<div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
+				<div style="flex:2"><p>{{item.product.name}}</p></div>
+				<div style="flex:1"><p>${{item.product.price|floatformat:2}}</p></div>
+				<div style="flex:1"><p>x{{item.quantity}}</p></div>
+			</div>
+			{% endfor %}
+
+			<table class="table">
+				<!-- <tr>
+					<th><h5>Subtotal: <strong>{{order.get_cart_items}} Items</strong></h5></th>
+					<th><h5><strong>${{order.get_cart_total|floatformat:2}}</strong></h5></th>				
+				</tr> -->
+
+				<tr>
+					<th><h5>Delivery: <strong></strong></h5></th>
+					<th><h5>${{order.delivery_charge|floatformat:2}}</h5></th>				
+				</tr>
+
+				
+				<tr>
+					<th><h5>Discount: <strong></strong></h5></th>
+					<th><h5>$</h5></th>				
+				</tr>
+				
+				<tr>
+					<th><h5>GST: <strong></strong></h5></th>
+					<th><h5>${{order.gst|floatformat:2}}</h5></th>				
+				</tr>
+				
+				<tr>
+					<th><strong><h5>Total (Inc. GST): </h5></strong></th>
+					<th><strong><h5>${{order.get_cart_total|floatformat:2}}</strong></h5></th>				
+				</tr>
+
+			</table>
+
+	
+					
+			<!-- This is the original design -->
+			 <!-- SUBTOTAL DELIVERY GST AND TOTAL -->
+			<!-- <h5>Subtotal ({{order.get_cart_items}} items):  ${{order.get_cart_total|floatformat:2}}</h5>
+			<h5>Delivery:  ${{order.delivery_charge|floatformat:2}}</h5>
+			<h5>GST:  ${{order.gst|floatformat:2}}</h5>
+			<hr>
+			<h5>Total(Inc. GST):  ${{order.total_with_gst|floatformat:2}}</h5> -->
+		</div>
+		<!-- <br> -->
+		
+	</div>
+	<!-- ORDER SUMMARY END -->
+
+	
+
+	
+
+	<!-- ----------------PAYPAL BUTTON INTEGRATION--------------------------------------------------------------------------------------- -->
+
+	<!-- Include the PayPal JavaScript SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=Ab9mTzaNcGQAp8s1ZmfFxEnDd10OGEMlyMEX7npiWS6wNxHDP7ZJWQZr3w5sI2R5hvAldI8v_rFdHq7E&currency=NZD"></script>
+
+	<script>
+		var total = '{{order.get_cart_total}}'
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+
+			style: {
+			color:  'silver',
+			shape:  'rect',
+       		},
+			
+
+			// 2 main methods below 
+
+			// CREATE ORDER METHOD
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value:parseFloat(total).toFixed(2)
+                        }
+                    }]
+                });
+            },
+
+			// METHOD ON APPROVE
+            // Finalize the transaction
+		// 	onApprove: function(data, actions) {
+        //         return actions.order.capture().then(function(details) {
+        //             // Show a success message to the buyer
+        //             alert('Transaction completed by ' + details.payer.name.given_name + '!');
+        //         });
+        //     }
+
+
+       		onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    // Show a success message to the buyer
+                    submitFormData()
+                });
+            }
+
+        }).render('#paypal-button-container');
+    </script>
+
+	<!-- ----------------END PAY PAL BUTTON ----------------------------------------------------------------------------------- -->
+
+	<script type="text/javascript">
+		var shipping = '{{order.shipping}}'
+		
+		// var total = '{{order.get_cart_total|floatformat:2}}' this show the input field name and email over the shipping input fields
+
+		if (shipping == 'False'){
+		 	document.getElementById('shipping-info').innerHTML = ''
+		}
+
+		if (user != 'AnonymousUser'){
+		 	document.getElementById('user-info').innerHTML = ''
+		 }
+
+		if (shipping == 'False' && user != 'AnonymousUser'){
+			//Hide entire form if user is logged in and shipping is false
+				document.getElementById('form-wrapper').classList.add("hidden");
+				//Show payment if logged in user wants to buy an item that does not require shipping
+			    document.getElementById('payment-info').classList.remove("hidden");
+		}
+
+		var form = document.getElementById('form')
+		form.addEventListener('submit', function(e){
+	    	e.preventDefault()
+	    	console.log('Form Submitted...')
+	    	document.getElementById('form-button').classList.add("hidden");
+	    	document.getElementById('payment-info').classList.remove("hidden");
+	    })
+
+		/*
+	    document.getElementById('make-payment').addEventListener('click', function(e){
+	    	submitFormData()
+	    })
+	    */
+
+	    function submitFormData(){
+	    	console.log('Payment button clicked')
+
+	    	var userFormData = {
+				'name':null,
+				'email':null,
+				'total':total,
+			}
+
+			var shippingInfo = {
+				'address':null,
+				'city':null,
+				'state':null,
+				'zipcode':null,
+			}
+
+			if (shipping != 'False'){
+	    		shippingInfo.address = form.address.value
+		    	shippingInfo.city = form.city.value
+		    	shippingInfo.state = form.state.value
+		    	shippingInfo.zipcode = form.zipcode.value
+	    	}
+
+	    	if (user == 'AnonymousUser'){
+	    		userFormData.name = form.name.value
+	    		userFormData.email = form.email.value
+	    	}
+
+	    	console.log('Shipping Info:', shippingInfo)
+	    	console.log('User Info:', userFormData)
+
+	    	var url = "/process_order/"
+	    	fetch(url, {
+	    		method:'POST',
+	    		headers:{
+	    			'Content-Type':'application/json',
+	    			'X-CSRFToken':csrftoken,
+	    		}, 
+	    		body:JSON.stringify({'form':userFormData, 'shipping':shippingInfo}),
+	    		
+	    	})
+	    	.then((response) => response.json())
+	    	.then((data) => {
+				console.log('Success:', data);
+				alert('Transaction completed');  
+
+				cart = {}
+				document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+
+				window.location.href = "{% url 'store' %}"
+
+				})
+	    }
+	</script>
+{% endblock content %}
+

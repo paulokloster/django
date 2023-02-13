@@ -1,0 +1,337 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
+body{
+    
+	background-color: hsl(0, 0%, 98%);
+    font-family: 'Quicksand', sans-serif;
+}
+
+h1,h2,h3,h4,h5,h6{
+	color:#772CE8
+}
+
+/* Navbar logo brand text  */
+a.navbar-brand {    
+    font-weight: bold;
+  }
+
+  /* Navbar links text  */
+  a.navbar-brand, a.nav-link {
+    font-weight: bold; /* other values could be lighter, normal, 100, 200, 300, 400, 500, 600, 700, 800, 900 */
+  }
+  
+
+  /* color in the back of the product price under thumbnail */
+.box-element{
+  
+	box-shadow:#eeeeee 0 0 16px;
+	background-color: #fff;
+	border-radius: 6px;
+	padding: 10px;
+  border-color: #772CE8;
+    
+    
+}
+
+/* product image size */
+.thumbnail{
+	width: 85%;
+	height: 200px;
+	-webkit-box-shadow: -1px -3px 5px -2px rgb(238, 238, 238);
+  -moz-box-shadow: -1px -3px 5px -2px rgb(238, 238, 238);
+  box-shadow: -1px -3px 5px -2px rgb(238, 238, 238);
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+   
+}
+
+.product{
+  
+    width: 85%;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;    
+}
+
+/* changing navbar color */
+.bg-dark{
+	background-color: #eeeeee!important;
+}
+
+#cart-icon{
+	width:25px;
+	display: inline-block;
+	margin-left: 15px;
+}
+
+#cart-total{
+	display: block;
+	text-align: center;
+	color:#fff;
+	background-color: red;
+	width: 20px;
+	height: 25px;
+	border-radius: 50%;
+	font-size: 14px;
+    
+}
+
+.col-lg-4, .col-lg-6, .col-lg-8, .col-lg-12{
+	margin-top: 10px;
+    
+}
+
+
+.btn{
+	border-radius: 0;
+}
+
+.row-image{
+	width: 100px;
+}
+
+.form-field{
+	width:250px;
+	display: inline-block;
+	padding: 5px;
+}
+
+.cart-row{
+	display: flex;
+    align-items: flex-stretch;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #f20000;
+    
+
+}
+
+.quantity{
+	display: inline-block;
+	font-weight: 700;
+	padding-right:10px;
+	
+
+}
+
+.chg-quantity{
+	width: 12px;
+	cursor: pointer;
+	display: block;
+	margin-top: 5px;
+	transition:.1s;
+}
+
+.chg-quantity:hover{
+	opacity: .6;
+}
+
+
+.hidden{
+	display: none!important;
+}
+
+/* ---------------------------------------------- */
+
+  /* Navbar login button text */
+
+  .login-btn {
+    color: #fff !important;
+    border-radius: 6px;
+    border-color: #772CE8;
+    background-image: linear-gradient(to right, #772CE8, #9146FF)!important; 
+    transition: all 0.3s ease;
+    border: none;
+    height: 30px;
+  }
+
+  /* position of text inside login button */
+  .login-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .login-btn:hover {
+    color: #fff !important;
+    border-radius: 6px;
+    background-image: linear-gradient(to right, #772CE8, #8636fe)!important;
+    
+  }
+  
+  .login-btn:active {
+    color: #fff !important;
+    background-color: #772CE8 !important;
+    border-color: #772CE8 !important;
+  }
+ 
+
+
+
+.navbar-brand, .nav-link, .navbar-nav li a {
+    color: #772CE8;
+  }
+
+/* changing color of brand (logo or text)   */
+  .navbar-brand {
+    color:#772CE8 !important
+  }
+
+/* changing color of text STORE   */
+.nav-link {
+    color:#772CE8 !important
+  }
+
+.navbar {
+    border-bottom: 1px solid #772CE8;
+    
+}
+  
+/* STORE PAGE----------------------------------------------------------------------------- */
+
+/* product add to cart button color */
+
+.btn-outline-secondary {
+  color: #fff !important;
+  border-radius: 6px;
+  border-color: #772CE8;
+  background-image: linear-gradient(to right, #772CE8, #9146FF)!important; 
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-outline-secondary:hover {
+  color: #fff !important;
+  border-radius: 6px;
+  background-image: linear-gradient(to right, #772CE8, #8636fe)!important;
+  
+}
+
+.btn-outline-secondary:active {
+  color: #fff !important;
+  background-color: #772CE8 !important;
+  border-color: #772CE8 !important;
+}
+
+/* Total products in the cart */
+#cart-total {
+    color: #772CE8; 
+    border-radius: 33%;
+    padding: 10px 5px;
+    background-color: #eeeeee;
+    display: flex;
+    margin-bottom: 0%;
+    
+    align-items: center;
+    text-align: center;
+}
+
+
+/* button view(product) */
+ 
+ .btn-outline-success {
+  color: #772CE8 !important;
+  background-color: #fff;
+  border: none;
+}
+
+/* button view(product) */
+.btn-outline-success {
+  color: #772CE8 !important;
+  border-radius: 6px;
+  border-color: #772CE8;
+}
+
+/* button view(product) */
+.btn-outline-success:hover {
+  color: #772CE8 !important;
+  border-radius: 6px;
+  background-color:#eeeeee !important;    
+}
+/* --------------------------------------------------------------------------------------- */
+
+
+
+
+
+
+
+ 
+
+  /* -------Shopping cart page ------------------- */
+
+ 
+   /*  Checkout button */
+   
+
+  .btn-success {
+    color: #fff !important;
+    border-radius: 6px;
+    border-color: #772CE8;
+    background-image: linear-gradient(to right, #772CE8, #9146FF)!important; 
+    transition: all 0.3s ease;
+    border: none;
+  }
+  
+  /* Checkout button */
+  .btn-success:hover {
+    color: #fff !important;
+    border-radius: 6px;
+    background-image: linear-gradient(to right, #772CE8, #8636fe)!important;
+    
+  }
+
+  /* Checkout button */
+  .btn-success:active {
+    color: #fff !important;
+    background-color: #772CE8 !important;
+    border-color: #772CE8 !important;
+  }
+
+
+
+  /* Continue shopping button */
+  .btn-outline {
+    color: #772CE8 !important;
+    background-color: #fff;
+  }
+  
+  /* Continue shopping button text */
+  .btn-outline-dark {
+    color: #772CE8 !important;
+    border-radius: 6px;
+    border-color: #772CE8;
+  }
+
+  /* Continue shopping button text hover*/
+  .btn-outline-dark:hover {
+    color: #772CE8 !important;
+    border-radius: 6px;
+    background-color:#eeeeee !important;    
+  }
+  
+  
+  .row{
+    border-radius: 6px;
+  }
+
+
+  .cart-row {
+    border-bottom: 1px solid #772CE8;
+    display: flex;
+   align-items: center;
+  }
+
+  .cart-row p {
+    color: #772CE8;
+  }
+
+
+  /* SPACE BETWEEN PRODUCTS */
+  .col-lg-4 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    
+  }
+  
