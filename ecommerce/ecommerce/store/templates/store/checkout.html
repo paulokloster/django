@@ -59,10 +59,13 @@
 				if (this.value === "Click & Collect") {
 					document.getElementById("delivery_to_group").style.display = "none";
 					document.getElementById("select_branch_group").style.display = "block";
+					document.getElementById('id_delivery_charge').innerHTML = 0;
 				} else {
 					document.getElementById("delivery_to_group").style.display = "block";
 					document.getElementById("select_branch_group").style.display = "none";
+					document.getElementById('id_delivery_charge').innerHTML = 10;
 				}
+				load_pricing_details()
 			});
 			</script>
 
@@ -103,7 +106,7 @@
 							<input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
 						</div>
 						<div class="form-field">
-							<input class="form-control" type="text" name="country" placeholder="Zip code..">
+							<input class="form-control" type="text" name="country" placeholder="Country">
 						</div>
 					</div>
 			
@@ -111,7 +114,11 @@
 						
 			
 			<hr>
+					{% if request.user.is_authenticated %}
 					<input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
+					{% else %}
+					<a href="{% url 'login' %}" class="btn btn-success btn-block" type="button">Continue</a>
+					{% endif %}
 				</form>
 			</div>
 			
@@ -128,33 +135,11 @@
 			
 
 
-			
-
-
-
 
 			
 		</div>
 
-		<!-- <div class="col-lg-6">
-			<div class="box-element">
-				<a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
-				<hr>
-				<h3>Order Summary</h3>
-				<hr>
-				{% for item in items %}
-				<div class="cart-row">
-					<div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
-					<div style="flex:2"><p>{{item.product.name}}</p></div>
-					<div style="flex:1"><p>${{item.product.price|floatformat:2}}</p></div>
-					<div style="flex:1"><p>x{{item.quantity}}</p></div>
-				</div>
-				{% endfor %}
-				<h5>Items:   {{order.get_cart_items}}</h5>
-				<h5>Total:   ${{order.get_cart_total|floatformat:2}}</h5>
-			</div>
-		</div>
-	</div> -->
+	
 	
 	<!-- ORDER SUMMARY -->
 	<div class="col-lg-6">
@@ -172,49 +157,76 @@
 				<div style="flex:1"><p>x{{item.quantity}}</p></div>
 			</div>
 			{% endfor %}
-
+			
 			<table class="table">
-				<!-- <tr>
+				<tr>
 					<th><h5>Subtotal: <strong>{{order.get_cart_items}} Items</strong></h5></th>
-					<th><h5><strong>${{order.get_cart_total|floatformat:2}}</strong></h5></th>				
-				</tr> -->
+<!--					<th><h5><strong>${{order.get_cart_total|floatformat:2}}</strong></h5></th>				-->
+					<th><h5><strong>$<span id="id_total_product_price">{{ total_product_price }}</span></strong></h5></th>
+				</tr>
 
 				<tr>
+					<th><h5>Discount: <strong></strong></h5></th>
+					<th><h5>$<span id="id_discount_price"></span></h5></th>
+				</tr>
+				
+				<tr>
 					<th><h5>Delivery: <strong></strong></h5></th>
-					<th><h5>${{order.delivery_charge|floatformat:2}}</h5></th>				
+<!--					<th><h5>${{order.delivery_charge|floatformat:2}}</h5></th>				-->
+					<th><h5>$<span id="id_delivery_charge">0</span></h5></th>
 				</tr>
 
 				
-				<tr>
-					<th><h5>Discount: <strong></strong></h5></th>
-					<th><h5>$</h5></th>				
-				</tr>
+
 				
 				<tr>
 					<th><h5>GST: <strong></strong></h5></th>
-					<th><h5>${{order.gst|floatformat:2}}</h5></th>				
+<!--					<th><h5>${{order.gst|floatformat:2}}</h5></th>				-->
+					<th><h5>$<span id="id_gst_charge"></span></h5></th>
 				</tr>
 				
 				<tr>
 					<th><strong><h5>Total (Inc. GST): </h5></strong></th>
-					<th><strong><h5>${{order.get_cart_total|floatformat:2}}</strong></h5></th>				
+<!--					<th><strong><h5>${{order.get_cart_total|floatformat:2}}</strong></h5></th>				-->
+					<th><h5><strong>$<span id="id_Total_final"></span></strong></h5></th>
 				</tr>
 
 			</table>
-
-	
-					
-			<!-- This is the original design -->
-			 <!-- SUBTOTAL DELIVERY GST AND TOTAL -->
-			<!-- <h5>Subtotal ({{order.get_cart_items}} items):  ${{order.get_cart_total|floatformat:2}}</h5>
-			<h5>Delivery:  ${{order.delivery_charge|floatformat:2}}</h5>
-			<h5>GST:  ${{order.gst|floatformat:2}}</h5>
-			<hr>
-			<h5>Total(Inc. GST):  ${{order.total_with_gst|floatformat:2}}</h5> -->
 		</div>
-		<!-- <br> -->
-		
 	</div>
+
+
+
+	<!--	javascript for show price with delivery and discount-->
+	<script>
+		load_pricing_details()
+		function load_pricing_details(){
+			console.log('hy');
+			var id_total_product_price = document.getElementById('id_total_product_price').innerHTML;
+			console.log(id_total_product_price);
+
+			var id_delivery_charge = document.getElementById('id_delivery_charge').innerHTML;
+			console.log(id_delivery_charge);
+
+			discount_percentage = 10;
+			discount_amount = id_total_product_price*10/100
+			discount_amount = discount_amount.toFixed(2)
+
+			gst_percentage = 15;
+			gst_amount = id_total_product_price*4/100
+			gst_amount = gst_amount.toFixed(2)
+
+
+			document.getElementById('id_discount_price').innerHTML = `${discount_amount} (${discount_percentage}%)`;
+			document.getElementById('id_gst_charge').innerHTML = `${gst_amount} (${gst_percentage}%)`;
+
+			Total_final = parseFloat(id_total_product_price) + parseFloat(id_delivery_charge) - parseFloat(discount_amount) + parseFloat(gst_amount);
+			Total_final = Total_final.toFixed(2)
+			document.getElementById('id_Total_final').innerHTML = Total_final;
+		}
+	</script>
+
+
 	<!-- ORDER SUMMARY END -->
 
 	
@@ -251,14 +263,7 @@
                 });
             },
 
-			// METHOD ON APPROVE
-            // Finalize the transaction
-		// 	onApprove: function(data, actions) {
-        //         return actions.order.capture().then(function(details) {
-        //             // Show a success message to the buyer
-        //             alert('Transaction completed by ' + details.payer.name.given_name + '!');
-        //         });
-        //     }
+		
 
 
        		onApprove: function(data, actions) {
@@ -361,5 +366,47 @@
 				})
 	    }
 	</script>
+	<script>
+        // update order summary when delivery method or discount changes
+        function updateOrderSummary() {
+            var deliveryAmount = 0;
+            var discountAmount = 0;
+            var subtotal = 0;
+            var total = 0;
+
+            // get delivery amount based on selected delivery method
+            var deliveryMethod = document.getElementById("delivery_method").value;
+            if (deliveryMethod === "Delivery") {
+                var deliveryCity = document.getElementById("delivery_city").value;
+                // calculate delivery amount based on delivery city
+                // ...
+            } else {
+                var selectedBranch = document.getElementById("select_branch").value;
+                // calculate delivery amount based on selected branch
+                // ...
+            }
+
+            // get discount amount based on discount code
+            var discountCode = document.getElementById("discount_code").value;
+            if (discountCode === "DISCOUNT10") {
+                // apply 10% discount
+                // ...
+            }
+
+            // calculate subtotal, total, and update HTML
+            // ...
+
+        }
+
+        // update order summary when delivery method changes
+        document.getElementById("delivery_method").addEventListener("change", function() {
+            updateOrderSummary();
+        });
+
+        // update order summary when discount code changes
+        document.getElementById("discount_code").addEventListener("change", function() {
+            updateOrderSummary();
+        });
+    </script>
 {% endblock content %}
 

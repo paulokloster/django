@@ -96,8 +96,17 @@ def cart(request):
     cartItems = data['cartItems']
     order = data['order']
     items = data['items']
+    total_product_price = 0
+    for item in items:
+        if request.user.is_authenticated:
+            product_price_quantity = item.product.price * item.quantity
+            total_product_price = total_product_price + product_price_quantity
+        else:
+            product_price_quantity = item["product"]["price"] * item["quantity"]
+            total_product_price = total_product_price + product_price_quantity
+    print(total_product_price)
 
-    context = {'items': items, 'order': order, 'cartItems': cartItems}
+    context = {'items': items, 'order': order, 'cartItems': cartItems, 'total_product_price':total_product_price}
     return render(request, 'store/cart.html', context)
 
 
@@ -107,8 +116,30 @@ def checkout(request):
     cartItems = data['cartItems']
     order = data['order']
     items = data['items']
+    # print('asuiduiwdhu')
+    # print(cartItems)
+    # print(order)
+    # print(items)
 
-    context = {'items': items, 'order': order, 'cartItems': cartItems}
+    total_product_price = 0
+    print(items)
+    print('items')
+    for item in items:
+        # print(item.product.price)
+        # print(item.quantity)
+        # print(item["product"])
+        # print(type(item))
+        if request.user.is_authenticated:
+            product_price_quantity = item.product.price * item.quantity
+            total_product_price = total_product_price + product_price_quantity
+        else:
+            product_price_quantity = item["product"]["price"] * item["quantity"]
+            total_product_price = total_product_price + product_price_quantity
+    print(total_product_price)
+
+    # delivery_charge = 10
+
+    context = {'items': items, 'order': order, 'cartItems': cartItems, 'total_product_price':total_product_price}
     return render(request, 'store/checkout.html', context)
 
 
@@ -154,6 +185,11 @@ def processOrder(request):
     total = float(data['form']['total'])
     order.transaction_id = transaction_id
 
+    # Update the order total to include delivery cost and discount
+    order.delivery_cost = float(data['form']['deliveryCost'])
+    order.discount_amount = float(data['form']['discountAmount'])
+    order.total_price = total + order.delivery_cost - order.discount_amount
+
     if total == float(order.get_cart_total):
         order.complete = True
     order.save()
@@ -169,3 +205,36 @@ def processOrder(request):
         )
 
     return JsonResponse('Payment submitted..', safe=False)
+
+
+# original start
+# def processOrder(request):
+#     transaction_id = datetime.datetime.now().timestamp()
+#     data = json.loads(request.body)
+
+#     if request.user.is_authenticated:
+#         customer = request.user.customer
+#         order, created = Order.objects.get_or_create(
+#             customer=customer, complete=False)
+#     else:
+#         customer, order = guestOrder(request, data)
+
+#     total = float(data['form']['total'])
+#     order.transaction_id = transaction_id
+
+#     if total == float(order.get_cart_total):
+#         order.complete = True
+#     order.save()
+
+#     if order.shipping == True:
+#         ShippingAddress.objects.create(
+#             customer=customer,
+#             order=order,
+#             address=data['shipping']['address'],
+#             city=data['shipping']['city'],
+#             state=data['shipping']['state'],
+#             zipcode=data['shipping']['zipcode'],
+#         )
+
+#     return JsonResponse('Payment submitted..', safe=False)
+# original end
